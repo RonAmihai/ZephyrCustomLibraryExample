@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.13.1)
 
+set (CMAKE_CXX_STANDARD 20)
+
 # Adds Zephyr source tree if library opened as standalone project
 if (NOT MY_ZEPHYR_LIBRARY_AS_ZEPHYR_MODULE)
     find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
