@@ -1,60 +1,46 @@
-.. _cpp_synchronization:
-
-C++ Synchronization
-###################
+Usage of Zephyr RTOS library (with sub dependencies)
+#####################################################
 
 Overview
-********
-The sample project illustrates usage of pure virtual class, member
-functions with different types of arguments, global objects constructor
-invocation.
+*****************************************************
+Sample project to demonstrate how to setup
+& use custom simple Zephyr RTOS library, which uses
+both Zephyr API & external dependencies (regular
+CMake libraries).
 
-A simple application demonstrates basic sanity of the kernel.  The main thread
-and a cooperative thread take turns printing a greeting message to the console,
-and use timers and semaphores to control the rate at which messages are
-generated. This demonstrates that kernel scheduling, communication, and
-timing are operating correctly.
+The sample also demonstrates C++20 & STL usage.
 
 Building and Running
 ********************
 
-This kernel project outputs to the console.  It can be built and executed
-on QEMU as follows:
+The Zephyr library (MyZephyrLibrary in this example)
+can be configured & compiled in several ways:
 
-.. zephyr-app-commands::
-   :zephyr-app: samples/cpp_synchronization
-   :host-os: unix
-   :board: qemu_x86
-   :goals: run
-   :compact:
+    1. As standalone project (running CMake / West
+    in MyZephyrLibrary directory).
 
-Sample Output
-=============
+    This method uses a "mocked" app for the sake of
+    compiling the library with Zephyr API (also useful
+    for including E2E / integration tests with the library)
 
-.. code-block:: console
+    2. As part of a real Zephyr application (running
+    CMake / West in the root directory).
 
-     Create semaphore 0x001042b0
-     Create semaphore 0x001042c4
-     main: Hello World!
-     coop_thread_entry: Hello World!
-     main: Hello World!
-     coop_thread_entry: Hello World!
-     main: Hello World!
-     coop_thread_entry: Hello World!
-     main: Hello World!
-     coop_thread_entry: Hello World!
-     main: Hello World!
-     coop_thread_entry: Hello World!
-     main: Hello World!
-     coop_thread_entry: Hello World!
-     main: Hello World!
-     coop_thread_entry: Hello World!
-     main: Hello World!
-     coop_thread_entry: Hello World!
-     main: Hello World!
-     coop_thread_entry: Hello World!
-     main: Hello World!
+    This method uses the Zephyr library as part of
+    a "host" (real) Zephyr application target
 
-     <repeats endlessly>
+All of Zephyr's documentation & tools is completely
+applicable and remains the same for both ways.
 
-Exit QEMU by pressing :kbd:`CTRL+A` :kbd:`x`.
+Notes
+*******************************************************
+- CMake C/C++ standards versions are set using
+  `CMAKE_CXX_STANDARD` instead of
+  `target_compile_features` due to a bug with
+  `arm-none-eabi` toolchain on Windows.
+
+- The idea is based on Zephyr's example for creating
+  kernel out-of-tree drivers. The given library is
+  actually a Zephyr module, without usage of the syscall
+  & external device mechanism.
+
